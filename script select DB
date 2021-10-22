@@ -1,0 +1,37 @@
+SELECT UserId, Name FROM BlogUser
+--
+//название полей
+SELECT UserId, Name 
+//название таблицы
+FROM BlogUser
+//фильтр по ключевому слову
+WHERE Name = 'Алла'
+//фильтр между
+WHERE RegistrationDate BETWEEN '20150101' AND '20201202'
+//сортировка
+ORDER BY Name 
+//по убыванию
+DESC
+---------------
+//выборка с двух таблиц
+//список полей
+SELECT BlogUser.UserId, BlogUser.Name, Blog.Name, RegistrationDate
+//с какой таблицы
+FROM BlogUser
+JOIN Blog 
+//по какому ключу
+ON BlogUser.UserId = Blog.UserId
+-------------
+//повторяющиеся значения можно переименовать (BlogUser.Name AS UserName, Blog.Name AS BlogName,)
+SELECT BlogUser.UserId, BlogUser.Name AS UserName, Blog.Name AS BlogName, RegistrationDate
+FROM BlogUser
+JOIN Blog ON BlogUser.UserId = Blog.UserId
+// переименовать название табл
+SELECT usr.UserId, usr.Name AS UserName, Blog.Name AS BlogName, RegistrationDate
+FROM BlogUser AS usr
+JOIN Blog ON usr.UserId = Blog.UserId
+----
+(INNER) JOIN - все записи с ключами
+LEFT/RIGHT JOIN - если в одной таблице есть ключ, а другой нет
+CROSS JOIN - перемножает количество записей
+FULL JOIN - все записи одной и другой таблицы
