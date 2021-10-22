@@ -1,0 +1,71 @@
+//создание табл
+USE [DfLessonDb]
+GO
+
+
+CREATE TABLE [dbo].[BlogUser](
+	[UserLogin] [varchar](50) NOT NULL,
+	[Password] [varchar](50) NOT NULL,
+	[Name] [nvarchar](50) NOT NULL,
+	[Surname] [nvarchar](50) NOT NULL,
+	[Patronymic] [nvarchar](50) NULL,
+	[Email] [varchar](50) NOT NULL,
+	[RegistrationDate] [datetime] NOT NULL
+) 
+GO
+
+//изменение табл
+ALTER TABLE [dbo].[BlogUser] 
+//добавить ограниечение
+ADD  CONSTRAINT [DF_User_RegistrationDate]  DEFAULT (getdate()) FOR [RegistrationDate]
+GO
+
+--
+ALTER TABLE Blog
+ADD  CONSTRAINT DF_Blog_CreateDate_Default  DEFAULT (getdate()) FOR [CreateDate]
+GO
+
+--------------------
+Ограничения
+1.	Ограничение NOT NULL
+2.	Ограничение PRIMARY KEY
+3.	Ограничение FOREIGN KEY
+4.	Ограничение UNIQUE
+ALTER TABLE BlogUser
+ADD  CONSTRAINT DF_BlogUser_UserLogin_Unique UNIQUE (UserLogin)
+GO
+5.	Ограничение CHECK
+6.	Ограничение DEFAULT
+----------------
+добавить id
+ALTER TABLE BlogUser
+ADD UserId int IDENTITY(1,1)
+GO
+-----------
+добавить ключ
+ALTER TABLE BlogUser
+ADD CONSTRAINT PK_BlogUser_UserId PRIMARY KEY CLUSTERED (UserID)
+GO
+--
+ALTER TABLE BlogUser
+ADD CONSTRAINT PK_Blog_BlogId PRIMARY KEY CLUSTERED (BlogId)
+GO
+---------
+удалить таблицу
+TRUNCATE TABLE BlogUser
+GO
+---------
+добавить данные
+INSERT INTO BlogUser (Name, Surname, Patronymic, Email, UserLogin, Password, RegistrationDate) VALUES
+('Алла', 'Литвин', 'Олександрівна', 'alla@urk.net', 'hello', '221056', '20201202')
+,('Ганна', 'Андрусь', 'Генадівна', 'inna@gmail.com', 'hay', '22564', '20201202')
+GO
+---------
+связать табл
+ALTER TABLE Blog
+WITH CHECK ADD CONSTRAINT FK_Blog_BlogUser FOREIGN KEY(UserId)
+REFERENCES BlogUser (UserId)
+ON UPDATE CASCADE
+ON DELETE CASCADE
+GO
+
