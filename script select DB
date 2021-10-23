@@ -1,3 +1,23 @@
+SELECT [DISTINCT | ALL] поля_таблиц 
+FROM список_таблиц 
+[WHERE условия_на_ограничения_строк]
+[GROUP BY условия_группировки]
+[HAVING условия_на_ограничения_строк_после_группировки]
+[ORDER BY порядок_сортировки [ASC | DESC]]
+[LIMIT ограничение_количества_записей]
+------------
+//вывести все столбцы
+SELECT * FROM Company;
+--------
+//уникальные записи
+SELECT DISTINCT town_to FROM Trip;
+------
+SELECT * FROM Payments
+WHERE unit_price BETWEEN 100 AND 200;
+----
+SELECT Name FROM BlogUser
+WHERE Name LIKE '%Алла';
+---
 SELECT UserId, Name FROM BlogUser
 --
 //название полей
@@ -35,3 +55,16 @@ JOIN Blog ON usr.UserId = Blog.UserId
 LEFT/RIGHT JOIN - если в одной таблице есть ключ, а другой нет
 CROSS JOIN - перемножает количество записей
 FULL JOIN - все записи одной и другой таблицы
+-------
+//группировка
+SELECT u.Surname + ' ' + u.Name UserName, b.Name, COUNT(p.PostId) PostCount
+FROM BlogUser u
+JOIN Blog b
+ON u.UserId = b.UserId
+JOIN Post p
+ON b.BlogId = p.BlogId
+GROUP BY u.Surname, u.Name, b.Name
+//сортировка по убыванию
+ORDER BY PostCount DESC
+-------
+
