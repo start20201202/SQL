@@ -8,6 +8,8 @@
 3.7 Вложенные запросы
 3.8 Объединение запросов, оператор UNION
 -------------------------------------------------------
+
+3.1 Базовый синтаксис SQL запроса
 SELECT [DISTINCT | ALL] поля_таблиц 
 FROM список_таблиц 
 [WHERE условия_на_ограничения_строк]
@@ -15,13 +17,55 @@ FROM список_таблиц
 [HAVING условия_на_ограничения_строк_после_группировки]
 [ORDER BY порядок_сортировки [ASC возр | DESC убыв]]
 [LIMIT ограничение_количества_записей]
-
-3 Основы выборки данных
-3.1 Базовый синтаксис SQL запроса
+--------------------------------------------------------
 3.2 Условный оператор WHERE
+****
+SELECT member_name FROM FamilyMembers
+WHERE member_name LIKE '% Quincey';
+*****
+SELECT unit_price FROM Payments 
+WHERE unit_price > 20
+*****
+SELECT * FROM Payments 
+WHERE amount BETWEEN 2 AND 3
+
+-------------------------------------------------------
 3.3 Сортировка, оператор ORDER BY
+****
+SELECT member_id from FamilyMembers
+WHERE member_name = 'Headley Quincey';
+****
+------------------------------------------------------
 3.4 Группировка, агрегатные функции
+******
+SELECT family_member, SUM(unit_price) FROM Payments 
+GROUP BY  family_member
+HAVING SUM(unit_price) > 500
+*******
+
 3.5 Многотабличные запросы
-3.6 Ограничение выборки, оператор LIMIT
+***
+SELECT BlogUser.UserId, BlogUser.Name, Blog.Name, RegistrationDate
+//с какой таблицы
+FROM BlogUser
+JOIN Blog 
+//по какому ключу
+ON BlogUser.UserId = Blog.UserId
+****
+3.6 Ограничение выборки, оператор TOP
+****
+SELECT TOP 2 UserLogin
+****
 3.7 Вложенные запросы
+****
+SELECT поля_таблиц 
+FROM список_таблиц 
+WHERE конкретное_поле IN (
+SELECT поле_таблицы FROM таблица
+)
+****
 3.8 Объединение запросов, оператор UNION
+*********
+SELECT поля_таблиц FROM список_таблиц ...
+UNION [ALL] 
+SELECT поля_таблиц FROM список_таблиц ... ;
