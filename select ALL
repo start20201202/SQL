@@ -69,3 +69,11 @@ SELECT поле_таблицы FROM таблица
 SELECT поля_таблиц FROM список_таблиц ...
 UNION [ALL] 
 SELECT поля_таблиц FROM список_таблиц ... ;
+-------
+впр
+****
+SELECT * FROM Payments
+WHERE family_member = (
+    SELECT member_id from FamilyMembers
+    WHERE member_name = 'Headley Quincey'
+);
