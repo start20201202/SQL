@@ -67,4 +67,10 @@ GROUP BY u.Surname, u.Name, b.Name
 //сортировка по убыванию
 ORDER BY PostCount DESC
 -------
-
+впр
+****
+SELECT * FROM Payments
+WHERE family_member = (
+    SELECT member_id from FamilyMembers
+    WHERE member_name = 'Headley Quincey'
+);
