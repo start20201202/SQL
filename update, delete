@@ -3,3 +3,12 @@ SET Description = 'Красота это сила'
 WHERE Description = 'Красота - єто сила'
 GO
 *****
+UPDATE Payments
+SET unit_price = unit_price * 2
+GO
+------------------------
+DELETE FROM Payments
+WHERE unit_price = 40
+GO
+****
+TRUNCATE TABLE имя_таблицы;
