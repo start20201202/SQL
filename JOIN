@@ -1,0 +1,46 @@
+Соединение бывает внутренним (INNER)
+или внешним (OUTER), 
+при этом внешнее соединение делится на левое (LEFT),
+правое (RIGHT) 
+и полное (FULL).
+****
+INNER JOIN
+
+SELECT *
+FROM Payments
+INNER JOIN FamilyMembers
+ON Payments.payment_id=FamilyMembers.[member_id
+]
+GO
+***********
+витянути все з таб1 і таб2 навіть якщо нема співпадінь
+SELECT *
+FROM Payments
+FULL OUTER JOIN FamilyMembers
+ON Payments.payment_id=FamilyMembers.[member_id
+]
+GO
+******
+/*вытянуть только те, которые не пересекаются*/
+SELECT *
+FROM Payments
+FULL OUTER JOIN FamilyMembers
+ON Payments.payment_id=FamilyMembers.[member_id
+]
+WHERE FamilyMembers.[member_id
+] is  null OR Payments.family_member is  null
+GO
+********
+/*вытянуть данные с табл1 из соответствиями таб2, 
+если нет то null*/
+SELECT *
+FROM Payments
+LEFT OUTER JOIN FamilyMembers
+ON Payments.payment_id=FamilyMembers.[member_id
+]
+GO
+********
+
+
+
+
