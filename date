@@ -1,0 +1,4 @@
+SELECT CONVERT(DATE, name, 106) from test
+
+name - номер стовпчика
+test - назва таблиці
