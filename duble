@@ -1,0 +1,8 @@
+SELECT family_member
+FROM (
+    SELECT family_member, count(family_member) AS count
+    FROM Payments
+    GROUP BY family_member
+) as family_member_count
+WHERE count > 1
+ORDER BY family_member DESC
