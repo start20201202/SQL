@@ -1,0 +1,39 @@
+WITH paid AS (SELECT
+					DISTINCT email
+					FROM statistics_orders AS so 
+					join customers_customer AS cc ON so.customer_id = cc.id
+					WHERE so.payment_date IS NOT NULL AND so.product_type_id IN (14,15,32,33,34)
+					),
+					
+non_paid AS (SELECT DISTINCT 
+	 			   cc.email, cc.site_id, REPLACE(s.name, 'www.','') AS site_name, 
+					 row_number() over (partition BY cc.email ORDER BY so.created DESC) AS row_n,
+					 first_value(so.created) over (partition BY cc.email ORDER BY so.created DESC) AS regdate
+	 				FROM statistics_orders AS so 
+					JOIN customers_customer AS cc ON so.customer_id = cc.id
+					JOIN core_site AS s ON s.id = cc.site_id					
+					LEFT JOIN  paid ON paid.email = cc.email 
+				   WHERE so.created >= NOW()::DATE - INTERVAL '3 months'  
+						AND paid.email IS NULL 
+						AND so.paid_status = 'not_paid' 				   
+						AND so.product_type_id IN (14,15,32,33,34)
+					),
+	 leads AS (select
+	           DISTINCT customers_lead.email, customers_lead.site_id, REPLACE(s.name, 'www.','') AS site_name, 
+				  row_number() over (partition BY customers_lead.email ORDER BY customers_lead.created DESC) AS row_n,
+				  first_value(customers_lead.created) over (partition BY customers_lead.email ORDER BY customers_lead.created DESC) AS regdate
+	           FROM customers_lead 
+	           JOIN services_emails_collector AS t ON t.lead_id = customers_lead.id AND t.is_active
+	           JOIN core_site AS s ON customers_lead.site_id = s.id AND s.region_id IN (1,2,19,20,21)
+	           LEFT JOIN paid ON paid.email = customers_lead.email 
+	           LEFT JOIN non_paid ON non_paid.email = customers_lead.email 
+				  WHERE customers_lead.created >= NOW()::DATE - INTERVAL '3 months'       		 
+						AND customers_lead.email != ''
+	         		AND customers_lead.email IS NOT NULL
+						AND paid.email IS NULL 
+				  		AND non_paid.email is null)
+	         		
+SELECT concat('safe_email_', email) as email, site_name, regdate FROM leads WHERE row_n = 1
+UNION DISTINCT
+SELECT concat('safe_email_', email) as email, site_name, regdate FROM non_paid WHERE row_n = 1 
+--------
